@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
 export const useOrdersStore = defineStore("OrdersStore", () => ({
-  orders: [
+  orders: ref([
     {
       id: 1,
       title: 'Order 1',
@@ -20,8 +21,5 @@ export const useOrdersStore = defineStore("OrdersStore", () => ({
       date: '2017-06-29 12:09:33',
       description: 'desc',
     }
-  ],
-  get products() {
-    return this.orders.map(order => order.products);
-  },
+  ])
 }));

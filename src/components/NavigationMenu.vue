@@ -15,12 +15,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-    const route = useRoute();
-
     const menuItems = ref([
       { label: 'Приход', route: '/home' },
-      { label: 'Группы', route: '/группы' },
+      { label: 'Группы', route: '/orders' },
       { label: 'Продукты', route: '/продукты' },
       { label: 'Пользователи', route: '/пользователи' },
       { label: 'Настройки', route: '/настройки' }

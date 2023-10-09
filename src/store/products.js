@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
-export const useOrdersStore = defineStore("ProductsStore", () => ({
-   products: [
+export const useProductStore = defineStore("ProductStore", () => {
+  const products = ref([
     {
       id: 1,
       serialNumber: 1234,
@@ -26,9 +27,9 @@ export const useOrdersStore = defineStore("ProductsStore", () => ({
       serialNumber: 1234,
       isNew: 1,
       photo: 'pathToFile.jpg',
-      title: 'Product 1',
+      title: 'Product 2',
       type: 'Monitors',
-      specification: 'Specification 1',
+      specification: 'Specification 2',
       guarantee: {
         start: '2017-06-29 12:09:33',
         end: '2017-06-29 12:09:33'
@@ -40,5 +41,9 @@ export const useOrdersStore = defineStore("ProductsStore", () => ({
       order: 2,
       date: '2017-06-29 12:09:33'
     }
-  ]
-}))
+  ]);
+
+  return {
+    products,
+  };
+});
