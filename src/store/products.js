@@ -1,13 +1,15 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { useOrdersStore } from './orders'
+import { ref, computed } from "vue";
 
 export const useProductStore = defineStore("ProductStore", () => {
   const products = ref([
     {
       id: 1,
+      name: 'Длинное название прихода',
       serialNumber: 1234,
       isNew: 1,
-      photo: 'pathToFile.jpg',
+      photo: 'src/assets/vue.svg',
       title: 'Product 1',
       type: 'Monitors',
       specification: 'Specification 1',
@@ -24,9 +26,10 @@ export const useProductStore = defineStore("ProductStore", () => {
     },
     {
       id: 2,
+      name: 'Длинное предлинное название прихода',
       serialNumber: 1234,
       isNew: 1,
-      photo: 'pathToFile.jpg',
+      photo: 'src/assets/vue.svg',
       title: 'Product 2',
       type: 'Monitors',
       specification: 'Specification 2',
@@ -43,7 +46,31 @@ export const useProductStore = defineStore("ProductStore", () => {
     }
   ]);
 
+  const formattedProducts = computed(() => {
+    return products.value.map((product) => {
+      const dateWithoutTime = product.date.split(' ')[0];
+      const dateParts = dateWithoutTime.split('-');
+      const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+      const guaranteeStartWithoutTime = product.guarantee.start.split(' ')[0];
+      const guaranteeStartParts = guaranteeStartWithoutTime.split('-');
+      const formattedGuaranteeStart = `${guaranteeStartParts[2]}/${guaranteeStartParts[1]}/${guaranteeStartParts[0]}`;
+
+      const guaranteeEndWithoutTime = product.guarantee.end.split(' ')[0];
+      const guaranteeEndParts = guaranteeEndWithoutTime.split('-');
+      const formattedGuaranteeEnd = `${guaranteeEndParts[2]}/${guaranteeEndParts[1]}/${guaranteeEndParts[0]}`;
+
+      return {
+        ...product,
+        date: formattedDate,
+        guarantee: {
+          start: formattedGuaranteeStart,
+          end: formattedGuaranteeEnd,
+        },
+      };
+    });
+  });
   return {
-    products,
+    products: formattedProducts
   };
 });
