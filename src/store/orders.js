@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useProductStore } from "./products";
 
 export const useOrdersStore = defineStore("OrdersStore", () => {
@@ -26,18 +26,35 @@ export const useOrdersStore = defineStore("OrdersStore", () => {
     }
   ]);
 
-  const ordersWithProducts = orders.value.map((order) => {
-    return {
-      ...order,
-      get products() {
-        // Вручную связываем заказ с продуктами на основе title
-        const matchingProducts = productsStore.products.value.filter((product) => product.order === order.id);
-        return matchingProducts;
-      },
-    };
+  const formattedOrders = computed(() => {
+    return orders.value.map((order) => {
+      const dateObj = new Date(order.date);
+      const day = dateObj.getDate();
+      const month = dateObj.getMonth() + 1; // Months are 0-based
+      const year = dateObj.getFullYear();
+      const formattedDate = `${day}/${month}/${year}`;
+
+      return {
+        ...order,
+        date: formattedDate
+      };
+    });
+  });
+
+  const getOrderProducts = computed(() => {
+    return orders.value.map(order => {
+      const orderNum = parseInt(order.title.split(' ')[1]);
+      const relatedProducts = productsStore.products.filter(product => product.order === orderNum);
+
+      return {
+        ...order,
+        products: relatedProducts
+      };
+    });
   });
 
   return {
-    orders: ordersWithProducts,
+    orders: formattedOrders,
+    getOrderProducts,
   };
 });

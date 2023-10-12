@@ -47,6 +47,11 @@
 import { useProductStore } from "../store/products.js";
 import { ref, computed, reactive } from "vue";
 
+const props = defineProps({
+  getProduct: {
+    type: Array
+  },
+});
 const { products } = useProductStore();
 const specSort = ref("");
 const typeSort = ref("");
